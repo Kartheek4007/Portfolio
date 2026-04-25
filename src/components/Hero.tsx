@@ -66,7 +66,8 @@ const Hero = () => {
             <motion.a
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              href="#contact"
+              href="/BOTTA KARTHEEK.pdf"
+              download="BOTTA_KARTHEEK_Resume.pdf"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg glass gradient-border font-semibold text-sm text-foreground transition-all duration-300"
             >
               <FileDown size={16} />

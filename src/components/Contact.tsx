@@ -1,16 +1,49 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Mail, Send, Phone, MapPin, Github, Linkedin } from "lucide-react";
+import { Mail, Send, Phone, MapPin, Github, Linkedin, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 3000);
-    setForm({ name: "", email: "", message: "" });
+    setIsLoading(true);
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/kartheekbota99@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          _subject: "New Portfolio Message!",
+          _captcha: "false"
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSent(true);
+        toast.success("Message sent successfully!");
+        setTimeout(() => setSent(false), 3000);
+        setForm({ name: "", email: "", message: "" });
+      } else {
+        toast.error(data.message || "Something went wrong. Have you activated FormSubmit?");
+        console.error("FormSubmit Error:", data);
+      }
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      toast.error("Failed to send message. Please check your connection.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -148,9 +181,14 @@ const Contact = () => {
             </div>
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:glow-primary transition-all duration-300 hover:scale-[1.02]"
+              disabled={isLoading}
+              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:glow-primary transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100"
             >
-              {sent ? (
+              {isLoading ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" /> Sending...
+                </>
+              ) : sent ? (
                 <>
                   <Mail size={16} /> Sent!
                 </>

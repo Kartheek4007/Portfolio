@@ -29,7 +29,7 @@ const projects: Project[] = [
       "Computer vision-powered system using YOLO for real-time detection of animal intrusions in agricultural fields, reducing crop damage with instant alerts.",
     tech: ["YOLOv8", "TensorFlow", "OpenCV", "Python"],
     image: projectAnimalNew,
-    github: "https://github.com/BottaKartheek",
+    github: "https://github.com/Kartheek4007/WILDLIFE-INTRUSION-DETECTION",
     demo: "#",
   },
   {

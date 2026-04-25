@@ -14,6 +14,22 @@ const navLinks = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute("href");
+    if (!href) return;
+    
+    // Check if it's a valid ID selector
+    if (href.startsWith("#")) {
+      const targetId = href.substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+    setOpen(false);
+  };
+
   return (
     <motion.nav
       initial={{ y: -80 }}
@@ -22,7 +38,7 @@ const Navbar = () => {
       className="fixed top-0 left-0 right-0 z-50 glass-strong"
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        <a href="#home" className="group relative" style={{ filter: "drop-shadow(0 0 10px rgba(0, 188, 212, 0.4))" }}>
+        <a href="#home" onClick={handleScroll} className="group relative" style={{ filter: "drop-shadow(0 0 10px rgba(0, 188, 212, 0.4))" }}>
           <div className="w-10 h-10 rounded-xl border border-primary/20 bg-primary/5 flex items-center justify-center transition-all duration-300 group-hover:border-primary/50 group-hover:bg-primary/10 group-hover:scale-105">
             <span className="text-xl font-bold gradient-text tracking-tight">BK</span>
           </div>
@@ -34,6 +50,7 @@ const Navbar = () => {
             <li key={l.href}>
               <a
                 href={l.href}
+                onClick={handleScroll}
                 className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
               >
                 {l.label}
@@ -66,7 +83,7 @@ const Navbar = () => {
                 <li key={l.href}>
                   <a
                     href={l.href}
-                    onClick={() => setOpen(false)}
+                    onClick={handleScroll}
                     className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
                   >
                     {l.label}
